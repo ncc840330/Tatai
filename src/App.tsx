@@ -15,7 +15,7 @@ const TRANSFER_ROUTES = [
   { from: "KMRM2", to: "Győr" },
   { from: "KMRM2", to: "Komárom-Huawei" },
 ];
-const TRANSFER_CATEGORIES = ["China-repacking", "Inbound", "Kiszedett lista", "Repackingolt lista", "RC-PD contract", "Egyéb"];
+const TRANSFER_CATEGORIES = ["China-repacking", "Scrap-repacking", Inbound", "Kiszedett lista", "Repackingolt lista", "RC-PD contract", "Egyéb"];
 const HUAWEI_ZONES = ["B1", "B4"];
 const PALLET_FULL_LOAD = 33;
 const transferRouteKey = (r: { from: string; to: string }) => `${r.from}__${r.to}`;
