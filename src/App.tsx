@@ -807,7 +807,7 @@ export default function App() {
 
   const today = getTodayKey();
   const dayKeys = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
-  const transferDayKeys = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2].map((i) => getDateKey(i));
+  const transferDayKeys = [-12, -11 ,-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
   const fuvarDayKeys = [-3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
 
   const saveDayPlan = async (dk, plan) => { const nd = { ...days, [dk]: plan }; setDays(nd); await fbSet("days", nd); };
