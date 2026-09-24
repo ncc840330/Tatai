@@ -807,7 +807,7 @@ export default function App() {
 
   const today = getTodayKey();
   const dayKeys = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
-  const transferDayKeys = [-12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
+  const transferDayKeys = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2].map((i) => getDateKey(i));
   const fuvarDayKeys = [-3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
 
   const saveDayPlan = async (dk, plan) => { const nd = { ...days, [dk]: plan }; setDays(nd); await fbSet("days", nd); };
@@ -1048,9 +1048,9 @@ export default function App() {
           </div>
         </div>
         <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 16px 10px", display: "flex", gap: 8, overflowX: "auto" }}>
-          {["utvonal", "transzfer", "fuvar", "export"].map((tab) => (
+          {["utvonal", "", "fuvar", "export"].map((tab) => (
             <button key={tab} className={`tab-btn ${activeTab === tab ? "active" : ""}`} onClick={() => setActiveTab(tab)}>
-              {tab === "utvonal" ? l.route : tab === "transzfer" ? l.transferTab : tab === "fuvar" ? l.fuvarTab : l.exportTab}
+              {tab === "utvonal" ? l.route : tab === "" ? l.transferTab : tab === "fuvar" ? l.fuvarTab : l.exportTab}
             </button>
           ))}
         </div>
