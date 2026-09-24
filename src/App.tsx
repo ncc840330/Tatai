@@ -807,7 +807,9 @@ export default function App() {
 
   const today = getTodayKey();
   const dayKeys = [-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
-  const transferDayKeys = [-12, -11 ,-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
+  const transferDayKeys = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
+  // mindig 3 sorban jelenjen meg, bármennyi nap is van
+  const transferCols = Math.ceil(transferDayKeys.length / 3);
   const fuvarDayKeys = [-3, -2, -1, 0, 1, 2, 3].map((i) => getDateKey(i));
 
   const saveDayPlan = async (dk, plan) => { const nd = { ...days, [dk]: plan }; setDays(nd); await fbSet("days", nd); };
@@ -1003,6 +1005,9 @@ export default function App() {
         .route-line { width: 2px; background: ${c.border}; flex: 1; min-height: 16px; margin: 2px 0; }
         .day-btn { border-radius: 8px; padding: 7px 12px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; border: 1px solid ${c.border}; background: ${c.surface}; color: ${c.subtle}; text-align: center; }
         .day-btn.selected { border-color: ${c.accent}; background: ${c.accent}; color: ${c.accentText}; }
+        .day-grid { display: grid; gap: 6px; margin-bottom: 16px; width: 100%; }
+        .day-grid .day-btn { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        @media (max-width: 480px) { .day-grid { gap: 4px; } .day-grid .day-btn { padding: 5px 2px !important; } .day-grid .day-btn > div:first-child { font-size: 10px !important; letter-spacing: -0.2px; } }
         .day-btn.tomorrow-style { border-color: ${c.accent}; background: ${isLight ? "#fff7ed" : "#f59e0b22"}; color: ${c.accent}; }
         .lang-menu { position: absolute; top: 36px; right: 0; background: ${c.surface}; border: 1px solid ${c.border}; border-radius: 8px; overflow: hidden; z-index: 100; min-width: 110px; box-shadow: ${c.shadow}; }
         .lang-option { padding: 8px 16px; cursor: pointer; font-size: 12px; font-weight: 700; color: ${c.text}; }
@@ -1048,9 +1053,9 @@ export default function App() {
           </div>
         </div>
         <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 16px 10px", display: "flex", gap: 8, overflowX: "auto" }}>
-          {["utvonal", "", "fuvar", "export"].map((tab) => (
+          {["utvonal", "transzfer", "fuvar", "export"].map((tab) => (
             <button key={tab} className={`tab-btn ${activeTab === tab ? "active" : ""}`} onClick={() => setActiveTab(tab)}>
-              {tab === "utvonal" ? l.route : tab === "" ? l.transferTab : tab === "fuvar" ? l.fuvarTab : l.exportTab}
+              {tab === "utvonal" ? l.route : tab === "transzfer" ? l.transferTab : tab === "fuvar" ? l.fuvarTab : l.exportTab}
             </button>
           ))}
         </div>
@@ -1289,7 +1294,7 @@ export default function App() {
         {activeTab === "transzfer" && (
           <>
             <div style={{ color: c.accent, fontSize: 18, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2, marginBottom: 12 }}>{l.transferTitle}</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6, marginBottom: 16 }}>
+            <div className="day-grid" style={{ gridTemplateColumns: `repeat(${transferCols}, minmax(0, 1fr))` }}>
               {transferDayKeys.map((dk) => {
                 const isToday = dk === today, isSelected = dk === transferDay;
                 const dayData = transfers[dk] || {};
@@ -1410,7 +1415,7 @@ export default function App() {
                 <div style={{ color: c.accent, fontSize: 18, fontFamily: "'Bebas Neue',sans-serif", letterSpacing: 2 }}>{l.fuvarTitle}</div>
                 <button onClick={() => setFuvarModal(true)} style={{ background: c.accent, border: "none", color: c.accentText, borderRadius: 8, padding: "8px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>+ {l.fuvarCreate}</button>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6, marginBottom: 16 }}>
+              <div className="day-grid" style={{ gridTemplateColumns: `repeat(${fuvarDayKeys.length}, minmax(0, 1fr))` }}>
                 {fuvarDayKeys.map((dk) => {
                   const isToday = dk === today, isSelected = dk === fuvarDay;
                   const count = (fuvarSavedMap[dk]?.items?.length || 0) + (fuvarDraftMap[dk]?.length || 0);
